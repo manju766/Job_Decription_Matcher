@@ -1,9 +1,12 @@
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from app.matcher import match_resume_to_job
 from app.schemas import MatchResponse
 import PyPDF2
 from docx import Document
+import os
 
 app = FastAPI(title="Job Description Matcher API")
 
@@ -14,6 +17,22 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount static files
+if os.path.exists("frontend"):
+    app.mount("/static", StaticFiles(directory="frontend"), name="static")
+
+@app.get("/")
+async def root():
+    """Root endpoint - serve the frontend or API info"""
+    if os.path.exists("frontend/index.html"):
+        return FileResponse("frontend/index.html")
+    return {"message": "Job Description Matcher API", "docs": "/docs", "frontend": "Visit /static/index.html"}
+
+@app.get("/health")
+async def health_check():
+    """Health check endpoint"""
+    return {"status": "healthy", "service": "Job Description Matcher API"}
 
 def extract_text_from_pdf(file):
     reader = PyPDF2.PdfReader(file)

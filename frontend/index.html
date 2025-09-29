@@ -668,7 +668,7 @@
         }
 
         try {
-          const resp = await fetch('http://127.0.0.1:8000/match', { method: 'POST', body: formData });
+          const resp = await fetch('/match', { method: 'POST', body: formData });
           const data = await resp.json();
           if (!resp.ok) {
             const err = data && data.detail ? data.detail : `Server error ${resp.status}`;
