@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Job Description Matcher</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-1: #7b2ff7;
+      --brand-2: #4a90e2;
+      --accent: #00d4ff;
+      --ink: #0b1426;
+      --muted: #64748b;
+      --bg: #f5f8ff;
+      --card: #ffffff;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(800px 400px at 6% 8%, rgba(123, 47, 247, .06), transparent),
+        radial-gradient(600px 300px at 94% 92%, rgba(74, 144, 226, .05), transparent),
+        linear-gradient(180deg, #fbfdff, #eef6ff);
+      -webkit-font-smoothing: antialiased;
+      padding-top: 72px;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: linear-gradient(135deg, var(--brand-1), var(--brand-2), var(--accent));
+      background-size: 300% 300%;
+      animation: gradientShift 8s ease infinite;
+      box-shadow: 0 10px 30px rgba(74, 144, 226, .18);
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .navbar:hover {
+      box-shadow: 0 15px 40px rgba(74, 144, 226, .25);
+      transform: translateY(-2px);
+    }
+    
+    .navbar-brand { 
+      font-weight: 800; 
+      color: #fff !important; 
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .navbar-brand::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+    
+    .navbar-brand:hover {
+      transform: scale(1.05);
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+    
+    .navbar-brand:hover::before {
+      left: 100%;
+    }
+    
+    .nav-link { 
+      color: #fff !important; 
+      font-weight: 600; 
+      opacity: .95; 
+      position: relative;
+      transition: all 0.3s ease;
+      margin: 0 5px;
+      border-radius: 8px;
+      padding: 8px 16px !important;
+      overflow: hidden;
+    }
+    
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 100%;
+      background: rgba(255,255,255,0.1);
+      transition: width 0.3s ease;
+      z-index: 0;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(45deg, #00d4ff, #ffffff);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+    
+    .nav-link:hover { 
+      opacity: 1; 
+      transform: translateY(-3px) scale(1.02);
+      color: #fff !important;
+      text-shadow: 0 0 8px rgba(255,255,255,0.4);
+      box-shadow: 0 5px 15px rgba(0,212,255,0.3);
+    }
+    
+    .nav-link:hover::before {
+      width: 100%;
+    }
+    
+    .nav-link:hover::after {
+      width: 80%;
+    }
+    
+    .nav-link:active {
+      transform: translateY(-1px) scale(0.98);
+    }
+
+    /* Utilities */
+    .btn-primary-grad {
+      background: linear-gradient(90deg, var(--brand-1), var(--brand-2));
+      color: #fff !important;
+      font-weight: 800;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      box-shadow: 0 12px 30px rgba(123, 47, 247, .16);
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.25s ease;
+    }
+    .btn-primary-grad:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(123, 47, 247, .24); }
+    .btn-ghost { background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.28); color: #fff; font-weight: 700; border-radius: 12px; padding: 12px 18px; }
+    .btn-ghost:hover { background: rgba(255,255,255,.24); color: #fff; transform: translateY(-2px); }
+    .card { border-radius: var(--radius); background: linear-gradient(180deg, #fff, #fbfdff); border: 1px solid rgba(74,144,226,.08); box-shadow: 0 12px 30px rgba(16,24,40,.05); }
+    .chip { padding: 6px 10px; border-radius: 999px; background: linear-gradient(90deg, #fff, #f8fbff); border: 1px solid rgba(74,144,226,.08); color: var(--ink); font-weight: 700; font-size: .88rem; display: inline-block; margin: 4px 6px 0 0; }
+
+    /* Contact Section Styling */
+    .section-contact {
+      background: var(--bg);
+      position: relative;
+    }
+    
+    .section-contact .card {
+      background: #ffffff;
+      border: 1px solid rgba(123, 47, 247, 0.08);
+      box-shadow: 0 12px 30px rgba(16, 24, 40, 0.08);
+      transition: all 0.3s ease;
+    }
+    
+    .section-contact .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+    
+    .section-contact .form-control {
+      border: 2px solid rgba(123, 47, 247, 0.1);
+      border-radius: 12px;
+      padding: 12px 16px;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.9);
+    }
+    
+    .section-contact .form-control:focus {
+      border-color: var(--brand-1);
+      box-shadow: 0 0 0 0.2rem rgba(123, 47, 247, 0.25);
+      background: #fff;
+    }
+
+    /* Hero */
+    .hero { position: relative; padding: clamp(72px, 12vw, 120px) 0 clamp(56px, 8vw, 96px); min-height: clamp(520px, 78vh, 720px); display: flex; align-items: center; overflow: hidden; isolation: isolate; }
+    .hero::before, .hero::after { content: ""; position: absolute; border-radius: 999px; opacity: .22; z-index: -2; }
+    .hero::before { width: 420px; height: 420px; background: radial-gradient(circle at top, rgba(123, 47, 247, .55), transparent 65%); top: -160px; right: -120px; }
+    .hero::after { width: 520px; height: 520px; background: radial-gradient(circle at bottom, rgba(74, 144, 226, .4), transparent 65%); bottom: -220px; left: -160px; }
+    .hero-grid { display: grid; gap: clamp(32px, 6vw, 56px); align-items: center; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: rgba(123, 47, 247, 0.12); color: var(--brand-1); font-weight: 800; font-size: .85rem; letter-spacing: .02em; text-transform: uppercase; }
+    .hero-badge::before { content: "★"; font-size: .95rem; }
+    .hero h1 { font-size: clamp(2.1rem, 4.6vw, 3.4rem); font-weight: 900; line-height: 1.1; margin: 0; color: #4a90e2; }
+    @supports (-webkit-background-clip: text) and (-webkit-text-fill-color: transparent) {
+      .hero h1 { background: linear-gradient(90deg, #4a90e2, #7b2ff7); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    }
+    .hero p.lead { color: var(--muted); max-width: 560px; margin: 0; font-size: clamp(1.02rem, 1.4vw, 1.12rem); }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+    .hero-visual { position: relative; }
+    .hero-visual::before { content: ""; position: absolute; inset: -18%; background: radial-gradient(circle at top, rgba(123, 47, 247, 0.25), transparent 70%); z-index: -1; filter: blur(24px); }
+    .hero-card { border-radius: 24px; padding: 28px; background: linear-gradient(155deg, rgba(255,255,255,.86), rgba(241,248,255,.98)); border: 1px solid rgba(255,255,255,.6); box-shadow: 0 24px 60px rgba(16,24,40,.12); backdrop-filter: blur(8px); display: grid; gap: 16px; }
+    .hero-card h3 { margin: 0; font-weight: 800; color: var(--brand-2); }
+    .hero-card ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+    .hero-card li { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--ink); }
+    .hero-card li::before { content: "✔"; color: var(--brand-1); font-weight: 800; }
+    .score { display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px; border-radius: 999px; background: rgba(123, 47, 247, 0.12); color: var(--brand-1); font-weight: 800; width: fit-content; }
+
+    /* Features */
+    .feature-card { padding: 26px; transition: transform .25s ease, box-shadow .25s ease; }
+    .feature-card:hover { transform: translateY(-8px); box-shadow: 0 22px 48px rgba(74, 144, 226, .12); }
+    .feature-card h5 { color: var(--brand-2); font-weight: 800; }
+
+    /* Steps */
+    .steps { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .step-card { position: relative; display: flex; gap: 16px; align-items: flex-start; padding: 18px 18px 18px 68px; border-radius: 14px; overflow: hidden; background: linear-gradient(180deg, #ffffff, #f7fbff); border: 1px solid rgba(74,144,226,.08); transition: transform .22s ease, box-shadow .22s ease; }
+    .step-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(74, 144, 226, .12); }
+    .step-badge { position: absolute; left: 16px; top: 16px; width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, var(--brand-1), var(--brand-2)); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; box-shadow: 0 10px 24px rgba(74, 144, 226, .20); }
+
+    /* Matcher Section */
+    .section-matcher { position: relative; padding: clamp(96px, 12vw, 140px) 0; background: linear-gradient(135deg, rgba(123, 47, 247, 0.12), rgba(0, 212, 255, 0.08)); overflow: hidden; }
+    .section-matcher::before, .section-matcher::after { content: ""; position: absolute; border-radius: 999px; opacity: .25; z-index: 0; }
+    .section-matcher::before { width: 520px; height: 520px; top: -220px; right: -140px; background: radial-gradient(circle, rgba(123, 47, 247, 0.5), transparent 70%); }
+    .section-matcher::after { width: 480px; height: 480px; bottom: -200px; left: -200px; background: radial-gradient(circle, rgba(74, 144, 226, 0.45), transparent 70%); }
+    .matcher-wrapper { position: relative; z-index: 1; display: grid; gap: clamp(40px, 6vw, 64px); align-items: stretch; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+    .matcher-copy { display: flex; flex-direction: column; gap: 16px; max-width: 560px; }
+    .matcher-pill { align-self: flex-start; padding: 8px 16px; border-radius: 999px; background: rgba(255,255,255,.72); color: var(--brand-1); font-weight: 800; letter-spacing: .04em; text-transform: uppercase; font-size: .78rem; box-shadow: 0 12px 28px rgba(123, 47, 247, .12); }
+    .matcher-copy h2 { font-size: clamp(2.2rem, 3.6vw, 3rem); font-weight: 900; color: var(--ink); margin: 0; line-height: 1.05; }
+    .matcher-copy p { font-size: 1.05rem; color: var(--muted); margin: 0; }
+    .matcher-highlights { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+    .matcher-highlights li { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--ink); }
+    .matcher-highlights li::before { content: "⚡"; color: var(--brand-2); font-size: 1.1rem; }
+    .matcher-card { padding: 32px; border-radius: 26px; background: #ffffff; border: 1px solid rgba(74,144,226,.12); box-shadow: 0 24px 60px rgba(16,24,40,.12); display: flex; flex-direction: column; gap: 24px; }
+    .matcher-card-header { display: flex; flex-direction: column; gap: 8px; }
+    .matcher-card-pill { align-self: flex-start; padding: 6px 12px; border-radius: 999px; background: rgba(74, 144, 226, 0.12); color: var(--brand-2); font-weight: 800; font-size: .75rem; letter-spacing: .04em; text-transform: uppercase; }
+    .matcher-card h3 { margin: 0; font-weight: 900; color: var(--ink); }
+    .matcher-card-subtitle { margin: 0; color: var(--muted); font-size: .95rem; }
+    .matcher-grid { display: flex; flex-direction: column; gap: 18px; }
+    @media (min-width: 992px) { .matcher-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; } .matcher-grid .full-width { grid-column: 1 / -1; } }
+    .field-label { font-weight: 800; font-size: .95rem; margin-bottom: 8px; color: var(--brand-2); }
+    .form-check { margin-bottom: 0; }
+    .form-check-input { width: 1.2em; height: 1.2em; margin-top: 0.125em; }
+    .form-check-label { font-weight: 600; padding-left: 0.5em; cursor: pointer; }
+    .glass-textarea { width: 100%; min-height: 170px; border-radius: 12px; padding: 14px 16px; resize: vertical; border: none; outline: none; font-size: .95rem; color: var(--ink); background: linear-gradient(180deg, #ffffff, #f5faff); box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 10px 26px rgba(16,24,40,.05); transition: box-shadow .18s ease, transform .12s ease; }
+    .glass-textarea:focus { box-shadow: 0 18px 40px rgba(74,144,226,.12); transform: translateY(-2px); }
+    .file-row { display: flex; gap: 12px; align-items: center; }
+    .file-btn { padding: .56rem .9rem; border-radius: 10px; border: 1px dashed rgba(74,144,226,.18); background: linear-gradient(180deg, #fff, #f6fbff); color: var(--brand-2); font-weight: 800; cursor: pointer; transition: all .2s ease; min-height: 44px; display: flex; align-items: center; justify-content: center; }
+    .file-btn:hover { border-color: rgba(74,144,226,.3); transform: translateY(-1px); }
+    .file-name { color: var(--muted); font-size: .9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
+    .btn-run { background: linear-gradient(90deg, var(--brand-1), var(--brand-2)); color: #fff; font-weight: 900; border-radius: 12px; padding: 12px 18px; border: none; box-shadow: 0 12px 30px rgba(123, 47, 247, .16); transition: transform .2s ease, box-shadow .2s ease; min-height: 48px; }
+    .btn-run:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(123,47,247,.24); }
+    .btn-run:disabled { opacity: .7; cursor: not-allowed; }
+    .result { margin-top: 14px; padding: 14px; border-radius: 12px; background: linear-gradient(180deg, #fff, #f7fbff); border: 1px solid rgba(123,47,247,.08); box-shadow: 0 12px 28px rgba(74,144,226,.08); animation: fadeIn .28s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+    footer { margin-top: 40px; padding: 18px 0; text-align: center; color: #fff; background: linear-gradient(90deg, var(--brand-2), var(--brand-1)); border-radius: 12px; }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .navbar {
+        animation-duration: 6s; /* Slightly faster on mobile */
+      }
+      
+      .navbar-brand:hover {
+        transform: scale(1.02); /* Less dramatic scaling on mobile */
+      }
+      
+      .nav-link {
+        margin: 2px 0;
+        text-align: center;
+      }
+      
+      .nav-link:hover {
+        transform: translateY(-2px) scale(1.01); /* Gentler animation on mobile */
+      }
+      
+      .hero { padding: 64px 0 48px; text-align: center; }
+      .hero-grid { display: flex; flex-direction: column; align-items: center; gap: 32px; }
+      .hero p.lead { max-width: none; }
+      .hero-actions { justify-content: center; }
+      .hero-card { padding: 24px; }
+      .matcher-wrapper { gap: 36px; }
+      .matcher-copy { max-width: none; align-items: center; text-align: center; }
+      .matcher-pill { align-self: center; }
+      .matcher-highlights { width: min(100%, 360px); margin: 0 auto; }
+      .matcher-card { padding: 24px; }
+      .file-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .file-btn { width: 100%; }
+      .file-name { max-width: none; width: 100%; text-align: center; }
+      .d-flex.gap-2 { flex-direction: column; }
+      .d-flex.gap-2 .btn { width: 100% !important; }
+    }
+    
+    /* Navbar Toggler Enhancements */
+    .navbar-toggler {
+      border: none;
+      padding: 8px 12px;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+    }
+    
+    .navbar-toggler:hover {
+      background: rgba(255,255,255,0.2);
+      transform: scale(1.05);
+    }
+    
+    .navbar-toggler:focus {
+      box-shadow: 0 0 0 2px rgba(0,212,255,0.5);
+    }
+    
+    .navbar-toggler-icon {
+      transition: all 0.3s ease;
+    }
+    
+    .navbar-toggler:hover .navbar-toggler-icon {
+      transform: rotate(90deg);
+    }
+    
+    /* Navbar Collapse Animation */
+    .navbar-collapse {
+      transition: all 0.3s ease;
+    }
+    
+    .navbar-nav {
+      animation: fadeInNav 0.5s ease;
+    }
+    
+    @keyframes fadeInNav {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Focus states for accessibility */
+    .nav-link:focus {
+      outline: 2px solid rgba(0,212,255,0.8);
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+    
+    .navbar-brand:focus {
+      outline: 2px solid rgba(0,212,255,0.8);
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+    
+    @media (max-width: 576px) {
+      .hero { padding: 40px 0 20px; }
+      .matcher-copy h2 { font-size: 2rem; }
+      .matcher-card { padding: 20px; }
+      .container { padding-left: 12px; padding-right: 12px; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#home">JD Matcher</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
+      <div id="nav" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+          <li class="nav-item"><a class="nav-link" href="#how">How it Works</a></li>
+          <li class="nav-item"><a class="nav-link" href="#matcher">Matcher</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section id="home" class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <span class="hero-badge">AI-powered matching · New</span>
+          <h1>Match your resume to the job in seconds</h1>
+          <p class="lead">Upload or paste your resume and target job description to uncover missing skills, boost your match score, and focus on what hiring managers care about.</p>
+          <div class="hero-actions">
+            <a href="#matcher" class="btn btn-primary-grad">Start matching free</a>
+            <a href="#how" class="btn btn-ghost">Watch 60-second demo</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-card">
+            <span class="score">Match preview · 82%</span>
+            <h3>Product Manager Role</h3>
+            <ul>
+              <li>Missing: A/B testing, Product analytics</li>
+              <li>Strength: Roadmapping, Stakeholder alignment</li>
+              <li>Insights updated in real time</li>
+            </ul>
+            <a href="#matcher" class="btn btn-primary-grad" style="width: fit-content;">Improve my score</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features (lightweight) -->
+  <section id="features" class="py-5">
+    <div class="container text-center">
+      <h2 class="mb-4">Features</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card feature-card"><div class="card-body">
+            <h5 class="card-title">Skill-focused</h5>
+            <p class="card-text text-muted mb-0">Find the skills you’re missing, not generic keywords.</p>
+          </div></div>
+        </div>
+        <div class="col-md-4">
+          <div class="card feature-card"><div class="card-body">
+            <h5 class="card-title">Upload or Paste</h5>
+            <p class="card-text text-muted mb-0">Text input plus DOCX/PDF extraction supported.</p>
+          </div></div>
+        </div>
+        <div class="col-md-4">
+          <div class="card feature-card"><div class="card-body">
+            <h5 class="card-title">Fast & Clear</h5>
+            <p class="card-text text-muted mb-0">Instant results with actionable suggestions.</p>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it Works -->
+  <section id="how" class="py-5">
+    <div class="container">
+      <h2 class="text-center mb-4">How it Works</h2>
+      <div class="steps">
+        <div class="step-card"><div class="step-badge">1</div><div>
+          <h6 class="m-0 fw-bold">Provide Resume</h6>
+          <p class="text-muted mb-0">Paste your resume or upload a DOCX/PDF. We extract the content automatically.</p>
+        </div></div>
+        <div class="step-card"><div class="step-badge">2</div><div>
+          <h6 class="m-0 fw-bold">Paste Job Description</h6>
+          <p class="text-muted mb-0">Add the target job description so we can compare skills.</p>
+        </div></div>
+        <div class="step-card"><div class="step-badge">3</div><div>
+          <h6 class="m-0 fw-bold">Get Results</h6>
+          <p class="text-muted mb-0">See a match score and the exact skills missing from your resume.</p>
+        </div></div>
+        <div class="step-card"><div class="step-badge">4</div><div>
+          <h6 class="m-0 fw-bold">Improve & Recheck</h6>
+          <p class="text-muted mb-0">Update your resume and re-run to improve your score.</p>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Matcher (flagship) -->
+  <section id="matcher" class="section-matcher">
+    <div class="container">
+      <div class="matcher-wrapper">
+        <div class="matcher-copy">
+          <span class="matcher-pill">Our core product</span>
+          <h2>Your personal co‑pilot for tailored applications</h2>
+          <p>Paste or upload your resume, add the job description, and instantly uncover the exact skills you're missing so you can adapt faster than any template can.</p>
+          <ul class="matcher-highlights">
+            <li>AI gap analysis in under 5 seconds</li>
+            <li>Works with text, DOCX, and PDF resumes</li>
+            <li>Smart, actionable improvement suggestions</li>
+          </ul>
+        </div>
+        <div class="matcher-interactive">
+          <div class="card matcher-card">
+            <div class="matcher-card-header">
+              <span class="matcher-card-pill">Interactive demo</span>
+              <h3>Try the Job Matcher</h3>
+              <p class="matcher-card-subtitle">Drop in your resume and target job to generate a match score and missing skills instantly.</p>
+            </div>
+
+            <form id="matcherForm" class="matcher-grid" novalidate>
+              <!-- Resume Section -->
+              <div class="resume-section">
+                <!-- Resume Input Type -->
+                <div class="mb-3">
+                  <div class="field-label">Resume Input Type</div>
+                  <div class="d-flex gap-3">
+                    <label class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="resumeType" value="text" checked>
+                      <span class="form-check-label">Text</span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="resumeType" value="file">
+                      <span class="form-check-label">Doc/PDF</span>
+                    </label>
+                  </div>
+                </div>
+                <!-- Resume Text -->
+                <div id="resumeTextDiv" class="mb-3">
+                  <div class="field-label">Paste Resume</div>
+                  <textarea id="resume" class="glass-textarea" placeholder="Paste your resume here..."></textarea>
+                  <div class="form-text text-muted mt-1">Tip: include tools, frameworks, certifications.</div>
+                </div>
+
+                <!-- Resume File -->
+                <div id="resumeFileDiv" class="mb-3 d-none">
+                  <div class="field-label">Upload Resume</div>
+                  <div class="file-row">
+                    <button id="chooseFileBtn" type="button" class="file-btn">Choose file</button>
+                    <input id="resumeFileInput" type="file" class="d-none" accept=".pdf,.docx">
+                    <div id="resumeFileName" class="file-name">No file chosen</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Job Description Section -->
+              <div class="job-section">
+                <div class="mb-3">
+                  <div class="field-label">Paste Job Description</div>
+                  <textarea id="job" class="glass-textarea" placeholder="Paste job description here..."></textarea>
+                </div>
+              </div>
+
+              <!-- Actions - Full Width -->
+              <div class="full-width">
+                <div class="d-flex gap-2">
+                  <button id="checkBtn" type="submit" class="btn btn-run flex-grow-1">Check Match</button>
+                  <button id="clearBtn" type="button" class="btn btn-outline-secondary">Clear</button>
+                </div>
+              </div>
+
+              <!-- Result - Full Width -->
+              <div id="result" class="result d-none full-width" aria-live="polite"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="section-contact">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <div class="card p-3 h-100">
+            <h4 class="mb-2">Contact Us</h4>
+            <p class="text-muted mb-3">Ready to transform your career journey? Let's connect and discover your perfect match!</p>
+            <form id="contactForm" onsubmit="event.preventDefault(); contactSubmit();">
+              <div class="mb-3"><input class="form-control" id="contactName" placeholder="Your name" required></div>
+              <div class="mb-3"><input class="form-control" id="contactEmail" placeholder="Your email" type="email" required></div>
+              <div class="mb-3"><textarea class="form-control" id="contactMsg" rows="4" placeholder="Your message" required></textarea></div>
+              <button class="btn btn-primary-grad w-100" type="submit">Send Message</button>
+            </form>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card p-4 h-100">
+            <h5 class="mb-2">Improve your resume faster</h5>
+            <p class="text-muted mb-2">See exactly which skills you’re missing and fix them quickly.</p>
+            <ul class="mb-3 text-muted">
+              <li>✨ AI-powered skill extraction focused on what matters</li>
+              <li>📄 Works with DOCX, PDF and plain text formats</li>
+              <li>⚡ Instant and clear results with detailed insights</li>
+              <li>🎯 Personalized recommendations for career growth</li>
+            </ul>
+            <a href="#matcher" class="btn btn-primary-grad">Start Matching</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container"><p class="mb-0">© 2025 Job Description Matcher</p></div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const resumeTextDiv = document.getElementById('resumeTextDiv');
+      const resumeFileDiv = document.getElementById('resumeFileDiv');
+      const resumeFileInput = document.getElementById('resumeFileInput');
+      const resumeFileName = document.getElementById('resumeFileName');
+      const chooseFileBtn = document.getElementById('chooseFileBtn');
+      const matcherForm = document.getElementById('matcherForm');
+      const resultDiv = document.getElementById('result');
+      const clearBtn = document.getElementById('clearBtn');
+      const checkBtn = document.getElementById('checkBtn');
+
+      // Toggle resume type
+      document.querySelectorAll('input[name="resumeType"]').forEach(el => {
+        el.addEventListener('change', () => {
+          if (el.value === 'text' && el.checked) {
+            resumeTextDiv.classList.remove('d-none');
+            resumeFileDiv.classList.add('d-none');
+          } else if (el.value === 'file' && el.checked) {
+            resumeTextDiv.classList.add('d-none');
+            resumeFileDiv.classList.remove('d-none');
+          }
+        });
+      });
+
+      // File input UI
+      chooseFileBtn.addEventListener('click', () => resumeFileInput.click());
+      resumeFileInput.addEventListener('change', () => {
+        resumeFileName.textContent = resumeFileInput.files.length ? resumeFileInput.files[0].name : 'No file chosen';
+      });
+
+      // Clear form
+      clearBtn.addEventListener('click', () => {
+        const resumeEl = document.getElementById('resume');
+        const jobEl = document.getElementById('job');
+        if (resumeEl) resumeEl.value = '';
+        if (jobEl) jobEl.value = '';
+        resumeFileInput.value = '';
+        resumeFileName.textContent = 'No file chosen';
+        resultDiv.classList.add('d-none');
+        resultDiv.innerHTML = '';
+        document.querySelector('input[name="resumeType"][value="text"]').checked = true;
+        resumeTextDiv.classList.remove('d-none');
+        resumeFileDiv.classList.add('d-none');
+      });
+
+      // Handle submit without page reload
+      matcherForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const resumeType = document.querySelector('input[name="resumeType"]:checked').value;
+        const job = document.getElementById('job').value.trim();
+
+        resultDiv.classList.remove('d-none');
+        resultDiv.innerHTML = `<div style="padding:14px; color:#6b7280">Processing…</div>`;
+        checkBtn.disabled = true;
+
+        if (!job) {
+          resultDiv.innerHTML = "<p class='text-danger fw-bold mb-0'>Please paste the job description.</p>";
+          checkBtn.disabled = false;
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append('job_description', job);
+
+        if (resumeType === 'text') {
+          const resume = document.getElementById('resume').value.trim();
+          if (!resume) {
+            resultDiv.innerHTML = "<p class='text-danger fw-bold mb-0'>Please paste your resume.</p>";
+            checkBtn.disabled = false;
+            return;
+          }
+          formData.append('resume_text', resume);
+        } else {
+          if (!resumeFileInput.files.length) {
+            resultDiv.innerHTML = "<p class='text-danger fw-bold mb-0'>Please upload your resume file.</p>";
+            checkBtn.disabled = false;
+            return;
+          }
+          formData.append('resume_file', resumeFileInput.files[0]);
+        }
+
+        try {
+          const resp = await fetch('http://127.0.0.1:8000/match', { method: 'POST', body: formData });
+          const data = await resp.json();
+          if (!resp.ok) {
+            const err = data && data.detail ? data.detail : `Server error ${resp.status}`;
+            resultDiv.innerHTML = `<p class='text-danger fw-bold mb-0'>${err}</p>`;
+            return;
+          }
+
+          const missing = (data.missing_keywords || data.missing_skills || []).slice(0, 80);
+          resultDiv.innerHTML = `
+            <div class="d-flex justify-content-between align-items-center">
+              <div style="font-weight:800; color:var(--brand-2)">Match: ${data.match_score}%</div>
+              <div class="text-muted" style="font-size:.9rem">Suggestions to improve</div>
+            </div>
+            <div class="mt-2">
+              ${missing.length ? missing.map(s => `<span class=\"chip\">${s}</span>`).join('') : `<div style=\"color:green; font-weight:800\">None — great match 🎉</div>`}
+            </div>
+          `;
+        } catch (err) {
+          resultDiv.innerHTML = `<p class='text-danger fw-bold mb-0'>Error: ${err.message}</p>`;
+          console.error(err);
+        } finally {
+          checkBtn.disabled = false;
+        }
+      });
+    });
+
+    // Contact placeholder
+    function contactSubmit() {
+      const name = document.getElementById('contactName').value.trim();
+      const email = document.getElementById('contactEmail').value.trim();
+      const msg = document.getElementById('contactMsg').value.trim();
+      if (!name || !email || !msg) { alert('Please fill all fields.'); return; }
+      alert('Thanks — message sent!');
+      document.getElementById('contactForm').reset();
+    }
+  </script>
+</body>
+
+</html>
