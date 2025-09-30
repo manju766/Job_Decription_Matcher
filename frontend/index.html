@@ -160,8 +160,8 @@
       transition: all 0.25s ease;
     }
     .btn-primary-grad:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(123, 47, 247, .24); }
-    .btn-ghost { background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.28); color: #fff; font-weight: 700; border-radius: 12px; padding: 12px 18px; }
-    .btn-ghost:hover { background: rgba(255,255,255,.24); color: #fff; transform: translateY(-2px); }
+    .btn-ghost { background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.28); color: #6a6868; font-weight: 700; border-radius: 12px; padding: 12px 18px; }
+    .btn-ghost:hover { background: rgba(255,255,255,.24); color: #1d1c1c; transform: translateY(-2px); }
     .card { border-radius: var(--radius); background: linear-gradient(180deg, #fff, #fbfdff); border: 1px solid rgba(74,144,226,.08); box-shadow: 0 12px 30px rgba(16,24,40,.05); }
     .chip { padding: 6px 10px; border-radius: 999px; background: linear-gradient(90deg, #fff, #f8fbff); border: 1px solid rgba(74,144,226,.08); color: var(--ink); font-weight: 700; font-size: .88rem; display: inline-block; margin: 4px 6px 0 0; }
 
@@ -302,7 +302,11 @@
       .file-btn { width: 100%; }
       .file-name { max-width: none; width: 100%; text-align: center; }
       .d-flex.gap-2 { flex-direction: column; }
-      .d-flex.gap-2 .btn { width: 100% !important; }
+      .d-flex.gap-2 .btn { 
+        width: 100% !important; 
+        box-shadow: 0 12px 30px gray!important ; 
+        margin-bottom: 8px;
+      }
     }
     
     /* Navbar Toggler Enhancements */
@@ -401,7 +405,7 @@
           <p class="lead">Upload or paste your resume and target job description to uncover missing skills, boost your match score, and focus on what hiring managers care about.</p>
           <div class="hero-actions">
             <a href="#matcher" class="btn btn-primary-grad">Start matching free</a>
-            <a href="#how" class="btn btn-ghost">Watch 60-second demo</a>
+            <a href="#how" class="btn btn-primary-grad">Try 60-second demo</a>
           </div>
         </div>
         <div class="hero-visual">
