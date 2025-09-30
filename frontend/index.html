@@ -33,7 +33,7 @@
       color: var(--ink);
       background:
         radial-gradient(800px 400px at 6% 8%, rgba(123, 47, 247, .06), transparent),
-        radial-gradient(600px 300px at 94% 92%, rgba(74, 144, 226, .05), transparent),
+        radial-gradient(600px 300px at 94% 92%, rgba(9, 13, 17, 0.05), transparent),
         linear-gradient(180deg, #fbfdff, #eef6ff);
       -webkit-font-smoothing: antialiased;
       padding-top: 72px;
@@ -169,6 +169,7 @@
     .section-contact {
       background: var(--bg);
       position: relative;
+      padding: 80px 0;
     }
     
     .section-contact .card {
@@ -267,7 +268,8 @@
     .result { margin-top: 14px; padding: 14px; border-radius: 12px; background: linear-gradient(180deg, #fff, #f7fbff); border: 1px solid rgba(123,47,247,.08); box-shadow: 0 12px 28px rgba(74,144,226,.08); animation: fadeIn .28s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-    footer { margin-top: 40px; padding: 18px 0; text-align: center; color: #fff; background: linear-gradient(90deg, var(--brand-2), var(--brand-1)); border-radius: 12px; }
+    footer { margin-top: 80px; padding: 28px 0; text-align: center; color: #fff; background: linear-gradient(90deg, var(--brand-2), var(--brand-1)); border-radius: 12px; }
+    footer a:hover { text-shadow: 0 0 8px rgba(255,255,255,0.8); transform: scale(1.05); }
 
     /* Mobile */
     @media (max-width: 768px) {
@@ -377,7 +379,18 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="#home">JD Matcher</a>
+      <a class="navbar-brand" href="#home">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="margin-right: 8px; vertical-align: middle;">
+          <rect x="4" y="4" width="16" height="16" rx="3" fill="currentColor" opacity="0.2"/>
+          <rect x="6" y="7" width="12" height="2" rx="1" fill="currentColor"/>
+          <rect x="6" y="10" width="9" height="1.5" rx="0.75" fill="currentColor" opacity="0.8"/>
+          <rect x="6" y="12.5" width="7" height="1.5" rx="0.75" fill="currentColor" opacity="0.8"/>
+          <rect x="6" y="15" width="10" height="1.5" rx="0.75" fill="currentColor" opacity="0.8"/>
+          <circle cx="18" cy="6" r="3" fill="#00d4ff"/>
+          <path d="M16.5 6 L17.5 7 L19.5 5" stroke="white" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </svg>
+        JD Matcher
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
       <div id="nav" class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto align-items-center">
@@ -583,12 +596,45 @@
             <a href="#matcher" class="btn btn-primary-grad">Start Matching</a>
           </div>
         </div>
+        <div class="row g-4 mt-4">
+          <div class="col-12">
+            <div class="card p-4">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <h5 class="mb-2">👨‍💻 About the Developer</h5>
+                  <p class="text-muted mb-2">This Job Description Matcher was designed and developed with passion for helping job seekers find their perfect career match.</p>
+                  <p class="mb-0 text-muted">
+                    <strong>Built with:</strong> FastAPI, Python, Machine Learning, Modern UI/UX Design
+                  </p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                  <a href="https://github.com/manju766" target="_blank" rel="noopener noreferrer" 
+                     class="btn btn-outline-primary d-inline-flex align-items-center gap-2">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    View GitHub Profile
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <footer>
-    <div class="container"><p class="mb-0">© 2025 Job Description Matcher</p></div>
+    <div class="container">
+      <p class="mb-1">© 2025 Job Description Matcher</p>
+      <p class="mb-0" style="font-size: 0.9rem; opacity: 0.8;">
+        Designed and developed by 
+        <a href="https://github.com/manju766" target="_blank" rel="noopener noreferrer" 
+           style="color: #fff; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+          @manju766
+        </a>
+      </p>
+    </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
